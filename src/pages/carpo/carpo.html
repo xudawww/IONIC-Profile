@@ -1,0 +1,26 @@
+<ion-header>
+  <ion-navbar  color="primary">
+    <ion-title>
+      单车分享
+    </ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <div #map id="map">
+
+   
+
+</div>
+
+  <form [formGroup]="todo" class="input2" >
+    
+   
+    <ion-input #address formControlName="placeAutofill" id="googlePlaces"  placeholder="请输入其他接送地点" (click)="showAddressModal()" [(ngModel)]="address.place" type="text" required></ion-input>
+
+    <button  ion-button  icon-right  (click)="clear()"  [disabled]="!todo.valid"  >
+清空
+</button>
+  </form>
+ 
+</ion-content>

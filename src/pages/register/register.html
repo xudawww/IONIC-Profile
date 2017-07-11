@@ -1,0 +1,44 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>
+     注册
+    </ion-title>
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content>
+ 
+  <form [formGroup]="registerForm" (submit)="doRegister()" novalidate>
+    <ion-item>
+      <ion-label stacked>Email</ion-label>
+      <ion-input #email formControlName="email" type="email" (change)="elementChanged(email)"
+        placeholder="Your email address"
+        [class.invalid]="!registerForm.controls.email.valid && (emailChanged || submitAttempt)"></ion-input>
+    </ion-item>
+    <ion-item class="error-message" *ngIf="!registerForm.controls.email.valid  && (emailChanged || submitAttempt)">
+      <p>请输入邮箱的格式.</p>
+    </ion-item>
+    <ion-item>
+      <ion-label stacked>Password</ion-label>
+      <ion-input #password formControlName="password" type="password" (change)="elementChanged(password)"
+        placeholder="Your password"
+        [class.invalid]="!registerForm.controls.password.valid && (passwordChanged || submitAttempt)"></ion-input>
+    </ion-item>
+    <ion-item class="error-message" *ngIf="!registerForm.controls.password.valid  && (passwordChanged || submitAttempt)">
+      <p>密码必须超过六位数.</p>
+    </ion-item>
+    <ion-item>
+      <ion-label stacked>Full Name</ion-label>
+      <ion-input #fullname formControlName="fullname" type="text" (change)="elementChanged(fullname)"
+        placeholder="Your Full Name"
+        [class.invalid]="!registerForm.controls.fullname.valid && (fullnameChanged || submitAttempt)"></ion-input>
+    </ion-item>
+    <ion-item class="error-message" *ngIf="!registerForm.controls.fullname.valid  && (fullnameChanged || submitAttempt)">
+      <p>全名不可为空</p>
+    </ion-item>
+    <button ion-button block type="submit">
+      Register
+    </button>
+  </form>
+</ion-content>

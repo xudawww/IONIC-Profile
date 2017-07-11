@@ -1,0 +1,24 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>密码重设</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  
+  <form [formGroup]="resetpwdForm" (submit)="resetPwd()" novalidate>
+    <ion-item>
+      <ion-label stacked>Email</ion-label>
+      <ion-input #email formControlName="email" type="email" (change)="elementChanged(email)"
+        placeholder="你的邮箱地址"
+        [class.invalid]="!resetpwdForm.controls.email.valid && (emailChanged || submitAttempt)"></ion-input>
+    </ion-item>
+    <ion-item class="error-message" *ngIf="!resetpwdForm.controls.email.valid  && (emailChanged || submitAttempt)">
+      <p>请输入正确邮箱.</p>
+    </ion-item>
+    <button ion-button block type="submit">
+      重置密码
+    </button>
+  </form>
+</ion-content>
+

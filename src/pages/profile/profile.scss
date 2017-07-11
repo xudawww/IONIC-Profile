@@ -1,0 +1,57 @@
+.profile-item  {
+  text-align: center;
+  height: 300px;
+}
+.top{
+     
+      background-color:#87cff9;
+}
+.one{text-align: center;}
+
+.profile-picture {
+ 
+  border: 3px solid rgba(0, 0, 0, 0.25);
+  padding: 3px;
+  border-radius: 100%;
+  -webkit-box-sizing: content-box;
+  -moz-box-sizing: content-box;
+  box-sizing: content-box;
+  margin: 0% auto;
+  width: 80px;
+  height: 80px;
+  overflow: hidden;
+  
+}
+p{
+  
+}
+.profile-picture img {
+
+  object-fit: cover;
+overflow: hidden;
+  width: 80px;
+  height: 80px;
+  border-radius: 100%;
+  image-orientation: from-image;
+}
+.male{position: absolute;
+  color: lightblue;
+  font-size: 20px;
+  left:48%
+}
+
+.female{
+  position: absolute;
+  color:pink;
+  font-size: 20px;
+   left:48%
+}
+
+.profile-name {
+  text-align: center;
+
+  height: 30%;
+  padding-top: 20px;
+
+  text-transform: capitalize;
+}
