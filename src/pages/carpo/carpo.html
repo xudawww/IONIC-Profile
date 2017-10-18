@@ -1,26 +1,51 @@
 <ion-header>
   <ion-navbar  color="primary">
     <ion-title>
-      单车分享
+      在线司机
     </ion-title>
+    <ion-buttons *ngIf="ifneedre" end>
+        <button ion-button (click)="openModal()" >
+        司机申请
+        </button>
+        </ion-buttons>
   </ion-navbar>
 </ion-header>
-
 <ion-content>
-  <div #map id="map">
+    <div *ngIf="ifdriver">
+        <ion-item >
+            <ion-label>司机模式</ion-label>
+            <ion-toggle [checked]="isToggled" (ionChange)=" openModal() "></ion-toggle>
+          </ion-item>
+      </div>
 
-   
+  <div *ngIf="ifdriver">
+    <ion-item >
+        <ion-label>司机模式</ion-label>
+        <ion-toggle [checked]="isToggled" (ionChange)=" openModal() "></ion-toggle>
+      </ion-item>
+  </div>
 
-</div>
 
-  <form [formGroup]="todo" class="input2" >
+
+    <ion-list>
+    <ion-item>
+      <ion-icon  name="football" item-start large></ion-icon>
+      <h2>业务：搬家，买菜，常规接送</h2>
+      <p>11 N. Way St, Madison, WI 53703</p>
+      <button ion-button>下单接送</button>
+    </ion-item>
     
-   
-    <ion-input #address formControlName="placeAutofill" id="googlePlaces"  placeholder="请输入其他接送地点" (click)="showAddressModal()" [(ngModel)]="address.place" type="text" required></ion-input>
-
-    <button  ion-button  icon-right  (click)="clear()"  [disabled]="!todo.valid"  >
-清空
-</button>
-  </form>
+  
+    <ion-item  >
+        <ion-icon name="football" item-start large></ion-icon>
+        <h2>业务：搬家，买菜，常规接送</h2>
+        <p>11 N. Way St, Madison, WI 53703</p>
+        <button ion-button>下单接送</button>
+      </ion-item>
  
+    </ion-list>
+  
+ 
+  
+  
 </ion-content>

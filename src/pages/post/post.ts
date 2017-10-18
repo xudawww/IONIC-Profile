@@ -9,10 +9,14 @@ import {Post} from '../../providers/post';
 import { FormBuilder, Validators,FormGroup  } from '@angular/forms';
 import * as firebase from 'firebase/app';
 import  firebase1 from 'firebase';
-import { AngularFireDatabase,FirebaseListObservable,FirebaseObjectObservable } from 'angularfire2/database';
 import {Observable} from 'rxjs/Observable';
 import {Pipe,PipeTransform} from '@angular/core';
+import { Network } from '@ionic-native/network';
 import  * as moment from 'moment-timezone';
+import {
+  AfoListObservable,
+  AfoObjectObservable,
+  AngularFireOfflineDatabase } from 'angularfire2-offline/database'; 
 import { ActPage } from '../act/act';
 import 'rxjs/Rx';
 
@@ -43,13 +47,13 @@ export class PostPage {
    @ViewChild('sketchElement')sketchElement:ElementRef;
     @ViewChild('post1')post1:ElementRef;
     @ViewChild(Content)content:Content;
-  public rent:FirebaseListObservable<any>;
-  public life:FirebaseListObservable<any>;
-  public new:FirebaseListObservable<any>;
+  public rent: AfoListObservable<any[]>;
+  base64Image;
+  public life: AfoListObservable<any[]>;
+  public new: AfoListObservable<any[]>;
   public path:any;
-  public act:FirebaseObjectObservable<any>;
-    public act1:FirebaseListObservable<any>;
-  public base64Image: string;
+  public act:AfoObjectObservable<any>;
+    public act1:AfoListObservable<any[]>;
   public actid:any; 
   public myid:any
    public photos:any;
@@ -69,7 +73,7 @@ export class PostPage {
     public ifcanhide:boolean;
  loading: any;
 
-  constructor(public navCtrl: NavController,public plt: Platform,private device: Device,public pro1:Profile,public db:AngularFireDatabase,private formBuilder: FormBuilder,public actionSheetCtrl: ActionSheetController,public pro:Profile,public toastCtrl: ToastController,private camera: Camera,public loadingCtrl: LoadingController) {
+  constructor(public navCtrl: NavController,public plt: Platform,public network:Network,private device: Device,public pro1:Profile,public db:AngularFireOfflineDatabase,private formBuilder: FormBuilder,public actionSheetCtrl: ActionSheetController,public pro:Profile,public toastCtrl: ToastController,private camera: Camera,public loadingCtrl: LoadingController) {
 this.selectedSegment = '1';
 this.isToggled = true;
 
@@ -135,7 +139,8 @@ this.act= this.db.object("userProfile/"+id);
 
 }
 ngOnInit(){
-
+  this.pro.setid(this.myid);
+  this.pro.load();
 const id = localStorage.getItem('user');
 this.myid=id;
 this.pro.setid(id);
@@ -233,8 +238,7 @@ this.post=false;
 
 }
 postgo(){
-  this.pro.setid(this.myid);
-  this.pro.load();
+
 
  //// const va=this.sketchElement.nativeElement.innerText;
  // alert(va);
@@ -254,29 +258,26 @@ if(this.selectedSegment == '3')
 { cat = "new";}
 
 
-const push=this.db.list(cat).push({date1:0-new Date(moment().tz("America/Toronto")).getTime(),date:new Date().getFullYear()+"年"+new Date().getMonth()+"月"+new Date().getDate()+"日"+new Date().getHours()+"点"+new Date().getMinutes()+"分",post:post,id:this.pro.id,name:this.pro.name,text:post,pic:this.pro.pic});
+const push=this.db.list(cat).push({date1:0-new Date(moment().tz("America/Toronto")).getTime(),date:new Date().getFullYear()+"年"+new Date().getMonth()+"月"+new Date().getDate()+"日"+new Date().getHours()+"点"+new Date().getMinutes()+"分",post:post,id:this.pro.id,name:window.localStorage.getItem("name"),text:post,pic:window.localStorage.getItem("ava")});
 const key=push.key;
 this.db.object(cat+"/"+key).update({pid:key});
 
 
 var a=0;
-this.photos1.forEach(e => {
-    
-   firebase1.storage().ref().child("/images/"+this.device.uuid+new Date().getTime()+".jpg").putString(e,'base64',{ contentType: 'image/jpeg' }).then
-   (f=>{
-     
-    this.db.object(cat+"/"+key+"/pic1").update({[this.device.uuid+new Date().getTime()]:f.downloadURL});
+this.photos.forEach(e => {
 
-   })
+    this.db.object(cat+"/"+key+"/pic1").update({[this.device.uuid+new Date().getTime()]:e});
 
-       
-
-});
+  
 
 
 
 
 
+
+
+
+})
 
 this.photos=[];
   this.photos1=[];
@@ -290,6 +291,18 @@ this.presentToast("上传成功");
 
 
 delete1(id:any,id1:any){
+
+  if (this.network.type === 'none')
+  {
+   alert("网络无连接，请连接网络后再重试！");
+   return;
+
+ } 
+  else{
+
+
+
+
    let loading = this.loadingCtrl.create({
    
   });
@@ -369,7 +382,7 @@ ifsub=false;
 })
 
 
-})
+})}
 }
  
 
@@ -379,6 +392,23 @@ ifsub=false;
 
 
 delete(id:any){
+
+
+  if (this.network.type === 'none')
+  {
+
+    alert("网络无连接，请连接网络后再重试！");
+    return;
+
+ } 
+  else{
+
+
+
+
+
+
+
    let loading = this.loadingCtrl.create({
    
   });
@@ -446,7 +476,7 @@ loading.dismiss();
 this.presentToast("删除成功");
 
 
- 
+}
 
 }
  
@@ -595,7 +625,7 @@ wtw=this.pro.name+"@"+this.rn;
 }
 
 
-var push=this.db.list(this.receiver).push({whotowho:wtw,text:com,ava:this.pro.pic,senderid:this.myid,receiverid:this.rid,pn:this.pro.name}).key;
+var push=this.db.list(this.receiver).push({whotowho:wtw,text:com,ava:localStorage.getItem("ava"),senderid:this.myid,receiverid:this.rid,pn:localStorage.getItem("name")}).key;
 this.db.object(this.receiver+"/"+push).update({pid:push});
 this.post=false;
 var bo=false;

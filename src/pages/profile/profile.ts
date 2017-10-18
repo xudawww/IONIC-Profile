@@ -10,10 +10,15 @@ import { File } from '@ionic-native/file';
 import { Transfer } from '@ionic-native/transfer';
 import { FilePath } from '@ionic-native/file-path';
 import { Camera } from '@ionic-native/camera';
+import { Observable } from 'rxjs';
 import * as firebase from 'firebase/app';
 import  firebase1 from 'firebase';
+import {
+  AfoListObservable,
+  AfoObjectObservable,
+  AngularFireOfflineDatabase } from 'angularfire2-offline/database';
+ 
 
-import { AngularFireDatabase,FirebaseObjectObservable  } from 'angularfire2/database';
 declare var cordova: any;
 
 /*
@@ -28,22 +33,24 @@ declare var cordova: any;
 
 })
 export class ProfilePage {
+  fbava:any;
   id:any;
 modi:boolean;
 ifmodi:boolean;
 hidebutton:boolean;
 name:any;
-data:FirebaseObjectObservable<any>;
+data:AfoObjectObservable<any>;
 img:any;
  loading: Loading;
 pic:any;
+ava:any;
 sex:any;
 male1:boolean;
 female1:boolean;
 stat:any;
 gene:boolean;
 private todo : FormGroup;
-  constructor(public navCtrl: NavController, public zone: NgZone,public db: AngularFireDatabase,public toastCtrl: ToastController,public platform: Platform, public actionSheetCtrl: ActionSheetController,private camera: Camera, private transfer: Transfer, private file: File, private filePath:FilePath,public auth:Auth,public pro:Profile,public navParams: NavParams, public formBuilder: FormBuilder,public alertCtrl: AlertController, public loadingCtrl: LoadingController) {
+  constructor(public navCtrl: NavController, public zone: NgZone,public db: AngularFireOfflineDatabase,public toastCtrl: ToastController,public platform: Platform, public actionSheetCtrl: ActionSheetController,private camera: Camera, private transfer: Transfer, private file: File, private filePath:FilePath,public auth:Auth,public pro:Profile,public navParams: NavParams, public formBuilder: FormBuilder,public alertCtrl: AlertController, public loadingCtrl: LoadingController) {
   this.modi=false;
   this.hidebutton=false;
   this.gene=true;
@@ -113,17 +120,46 @@ selectPhoto(): void {
 }).then(imageData => {
      this.img=imageData
      this.pic="data:image/jpeg;base64,"+this.img;
-     
-
+     var img = document.getElementById("img") as HTMLImageElement;
+     img.src=this.pic
     }, error => {
       console.log("ERROR -> " + JSON.stringify(error));
     });
-
-
-
+  
+  
 
 
 }
+
+getBase64Image(img: HTMLImageElement) {
+  var canvas = document.createElement("canvas");
+  canvas.width = img.width;
+  canvas.height = img.height;
+  var ctx = canvas.getContext("2d");
+  ctx.drawImage(img, 0, 0);
+  var dataURL = canvas.toDataURL("image/png");
+  return dataURL.replace(/^data:image\/(png|jpg);base64,/, "");
+}
+getBase64ImageFromURL(url: string) {
+  return Observable.create((observer: any) => {
+    let img = new Image();
+    img.crossOrigin = 'Anonymous';
+    img.src = url;
+    if (!img.complete) {
+      img.onload = () => {
+        observer.next(this.getBase64Image(img));
+        observer.complete();
+      };
+      img.onerror = (err) => {
+        observer.error(err);
+      };
+    } else {
+      observer.next(this.getBase64Image(img));
+      observer.complete();
+    }
+  });
+}
+
 uploadPhoto(){
    let loading = this.loadingCtrl.create({
     content: '稍等图片正在上传'
@@ -132,21 +168,10 @@ uploadPhoto(){
   
   if(this.img!=undefined)
   {const id =localStorage.getItem('user');
-   firebase1.storage().ref().child("images/"+id+".jpg").putString(this.img,'base64',{ contentType: 'image/jpeg' })
-  .then((save)=>{
+  this.db.object("userProfile/"+id).update({pic:this.pic});
 
- this.data.update({pic:save.downloadURL });
-
-
-
-  })
   
   
-  .catch(e=>{
-   alert(e);
-
-});
-  
   }
 loading.dismiss();
 }
@@ -159,11 +184,12 @@ private presentToast(text) {
   });
   toast.present();
 }
+ionViewWillEnter(){ this.data= this.db.object("/userProfile/"+this.id);}
  ngOnInit():any {
-
+this.ava= localStorage.getItem("ava");
  this.id =localStorage.getItem('user');
  this.data= this.db.object("/userProfile/"+this.id);
-
+ this.fbava= localStorage.getItem("ava");
 
 
       this.todo = this.formBuilder.group({
@@ -203,14 +229,17 @@ this.modi=false;
 
 confirm(){
   this.uploadPhoto();
- 
-
-  //update({name:name,pic:pic,status:sta,sex:sex});
+ //update({name:name,pic:pic,status:sta,sex:sex});
   if(this.todo.valid!=true)
-  {  alert ('昵称最长不可以超过10个字，状态最长不可以超过50个字'); }
+  { 
+     alert ('昵称最长不可以超过10个字，状态最长不可以超过50个字');
+     }
   else{
-  const name =this.todo.controls['name'].value;
-  if(name!=undefined)
+    const name =this.todo.controls['name'].value;
+ 
+ 
+ 
+ if(name!=undefined)
    { this.name=name;
      this.data.update({name:this.name});}
  const status1= this.todo.controls['status'].value;

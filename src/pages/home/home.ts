@@ -15,9 +15,5 @@ profile(){
 const id= localStorage.getItem('user');
 this.pro.setid(id);
 this.pro.load();
-this.navCtrl.push(ProfilePage);
-
-
-
-}
+this.navCtrl.push(ProfilePage);}
 }

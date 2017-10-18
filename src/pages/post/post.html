@@ -48,9 +48,9 @@
 
 <button   *ngIf="(act1 | async)?.length>0"  block  outline ion-button (click)="gopage()">
        
-      <label  *ngIf="(act1 | async)?.length<99" > 未读评论   <ion-badge id="notifications-badge" color="danger">{{(act1 | async)?.length}}</ion-badge>
+      <label  *ngIf="(act1 | async)?.length<=99" > 未读评论   <ion-badge id="notifications-badge" color="danger">{{(act1 | async)?.length}}</ion-badge>
                   </label>
-     <label  *ngIf="(act1 | async)?.length>=99" > 未读评论   <ion-badge id="notifications-badge" color="danger">99</ion-badge>
+     <label  *ngIf="(act1 | async)?.length>99" > 未读评论   <ion-badge id="notifications-badge" color="danger">99+</ion-badge>
                   </label>
      
     
@@ -59,7 +59,7 @@
 </form>
   <ion-grid>
 <ion-row class="gallery" >
-  <ion-col  col-4  *ngFor="let photo of photos; let id=index"><ion-card class="block" ><ion-icon name="trash"  (click)="deletePhoto(id)" class="primary deleteIcon"></ion-icon> <img class="image"  [src]="photo" imageViewer /></ion-card></ion-col>
+  <ion-col  col-4  *ngFor="let photo of photos; let id=index"><ion-card class="block" ><ion-icon name="trash"  (click)="deletePhoto(id)" class="primary deleteIcon"></ion-icon> <img class="image1"  [src]="photo" imageViewer /></ion-card></ion-col>
  
 </ion-row>
 
@@ -107,11 +107,7 @@
  
   </ion-row>
   <br>
-
-
-
-
-  <ion-row>
+          <ion-row>
    
     <ion-col col-4>
       <button ion-button icon-left clear small (click)="comment(renter.pid,renter.name,renter.id)">
@@ -219,7 +215,7 @@
   
 
  <ion-row class="renderpic" class="grid-full">
-  <ion-col  col-4 *ngFor="let photo2 of  renter.pic1 | objectValues; "> <ion-card class="block1" ><img  class="image1"  [src]="photo2" imageViewer />  </ion-card>  </ion-col>
+  <ion-col  col-4 *ngFor="let photo2 of  renter.pic1 | objectValues; "> <ion-card class="block1" ><ion-img  [class]="image1"  [src]="photo2" imageViewer ></ion-img> </ion-card>  </ion-col>
  
   </ion-row>
   <br>

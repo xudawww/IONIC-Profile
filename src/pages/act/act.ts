@@ -32,6 +32,7 @@ export class ObjectValues1Pipe implements PipeTransform {
 export class ActPage {
 public myid;
 public compath1;
+public showup;
 public rn;
 public rid;
 public actid;
@@ -49,30 +50,11 @@ public po:FirebaseListObservable<any>;
 this.post=false;
 const id = localStorage.getItem('user');
 this.myid=id;
+this.showup=false
 
 
 
 
-
-this.po= this.db.list("/userProfile/"+id+'/act', { query: {
-    limitToFirst:1,
-   preserveSnapshot: true
-  } });
-
-   
-    this.po.subscribe(snapshots =>{
-
-      snapshots.forEach(snapshot => {
-        this.compath1=snapshot.key1;
-           this.compath=snapshot.key1+"/comment"
-           this.data=this.db.object(snapshot.key1);
-           this.data1=this.db.object(snapshot.key2);
-
-       });
-     
-
-
-    })
 
   }
   ngOnInit(){
@@ -82,6 +64,26 @@ this.com =this.formBuilder.group({
     });
 
 
+    this.po= this.db.list("/userProfile/"+this.myid+'/act', { query: {
+      limitToFirst:1,
+     preserveSnapshot: true
+    } });
+  
+     
+      this.po.subscribe(snapshots =>{
+  
+        snapshots.forEach(snapshot => {
+          this.compath1=snapshot.key1;
+             this.compath=snapshot.key1+"/comment"
+             this.data=this.db.object(snapshot.key1);
+             this.data1=this.db.object(snapshot.key2);
+            this.showup=true;
+  
+         });
+       
+  
+  
+      })
 
     
   }

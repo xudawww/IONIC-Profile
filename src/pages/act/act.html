@@ -12,7 +12,7 @@
 
   <div >
     <div>收件箱每次只显示一封未读评论</div>
-  <ion-card  class="ic"   >
+  <ion-card  class="ic"  *ngIf="showup" >
   <p *ngIf="(data | async)?.name==null||(data1 | async)?.ava==null">对方已经删除评</p>
 <ion-item  *ngIf="(data | async)?.name!=null" style="padding:-5px" >
     <ion-row>
