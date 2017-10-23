@@ -2,7 +2,7 @@
 <ion-header>
   <ion-navbar color="cos" >
     <ion-title>
-     个人资料
+     profile
     </ion-title>
      <ion-buttons end>
        <button ion-button *ngIf="ifmodi" style="font-size:22px" (click)="modify()">
@@ -31,17 +31,17 @@
           </div>
            
             <button   *ngIf="modi" ion-button icon-left (click)="presentActionSheet()">
-         <ion-icon name="camera"></ion-icon>上传头像
+         <ion-icon name="camera"></ion-icon>upload avatar
     
        </button>
          
        
         
            <div class="profile-name" *ngIf="gene">
-          <p style="color:white">昵称： {{(data | async)?.name}}</p>
-             <p style="color:white">性别：{{(data | async)?.sex}}</p>  
-             <p style="color:white">校区：{{(data | async)?.camp}}</p>  
-             <p style="color:white">专业：{{(data | async)?.pro}}</p>  
+          <p style="color:white">Nick Name： {{(data | async)?.name}}</p>
+             <p style="color:white">sex：{{(data | async)?.sex}}</p>  
+             <p style="color:white">campus：{{(data | async)?.camp}}</p>  
+             <p style="color:white">program：{{(data | async)?.pro}}</p>  
              <span *ngIf="male1">  <ion-icon  class="male" name="male" item-left primary></ion-icon></span>
            <span *ngIf="female1"> <ion-icon  class="female" name="female" item-left primary></ion-icon>  </span>
        
@@ -53,24 +53,24 @@
            <ion-item *ngIf="modi">
             
          
-          <ion-input type="text" placeholder="请在此修改昵称" [(ngModel)]="todo.name" formControlName="name" ></ion-input><br>
+          <ion-input type="text" placeholder="change your name" [(ngModel)]="todo.name" formControlName="name" ></ion-input><br>
           </ion-item>
 
 
            <ion-item *ngIf="modi">
           
-  <ion-label>性别</ion-label>
+  <ion-label>sex</ion-label>
   
   <ion-select formControlName="sex" >
-    <ion-option value="男">男</ion-option>
-    <ion-option value="女">女</ion-option>
+    <ion-option value="男">male</ion-option>
+    <ion-option value="女">female</ion-option>
   </ion-select>
 </ion-item>
 
 
    <ion-item *ngIf="modi">
           
-  <ion-label>校区</ion-label>
+  <ion-label>campus</ion-label>
   
   <ion-select formControlName="camp" >
     <ion-option value="Trafagal">Trafagal</ion-option>
@@ -81,11 +81,11 @@
             
           <br>
            <div class="one">
-          <div class="profile-info" *ngIf= "gene" >状态: {{(data | async)?.status}}</div>
+          <div class="profile-info" *ngIf= "gene" >status: {{(data | async)?.status}}</div>
            
          <ion-item  *ngIf="modi">
              
-          <ion-input formControlName="status"  placeholder="请在此修改状态" type="text"></ion-input>
+          <ion-input formControlName="status"  placeholder="change your status" type="text"></ion-input>
           <br>
          
         
@@ -93,20 +93,20 @@
            <br>
          
               <ion-item  *ngIf="modi">
-              <ion-input formControlName="pro"  placeholder="请填写专业" type="text"></ion-input> 
+              <ion-input formControlName="pro"  placeholder="write your program" type="text"></ion-input> 
            <br>
              </ion-item>
  </div>
         </form>
             
            
-           <button *ngIf="modi" ion-button (click)="confirm()">确认修改</button>
-           <button *ngIf="modi" ion-button  (click)="reset()">放弃修改</button>
-              <button ion-button *ngIf= "hidebutton" block icon-left ><ion-icon name="message"></ion-icon>私信</button>
+           <button *ngIf="modi" ion-button (click)="confirm()">comfirm</button>
+           <button *ngIf="modi" ion-button  (click)="reset()">give up</button>
+              <button ion-button *ngIf= "hidebutton" block icon-left ><ion-icon name="message"></ion-icon>message</button>
            <br>
-              <button  ion-button *ngIf= "hidebutton"  block icon-left ><ion-icon name="cancel"></ion-icon>屏蔽</button>
+              <button  ion-button *ngIf= "hidebutton"  block icon-left ><ion-icon name="cancel"></ion-icon>block</button>
               <br>
-              <button  ion-button *ngIf= "gene"  icon-left block (click)="logout()" ><ion-icon name="logout"></ion-icon>登出</button>
+              <button  ion-button *ngIf= "gene"  icon-left block (click)="logout()" ><ion-icon name="logout"></ion-icon>log out</button>
       </div>
       
 

@@ -111,7 +111,7 @@ logForm() {
     if (this.network.type === 'none')
     {
 
-      alert("网络无连接，请连接网络后再登陆！");
+      alert("no internet");
 
    } 
     else{
@@ -172,13 +172,13 @@ logForm() {
     
      var ava=  "https://graph.facebook.com/" + success.providerData[0].uid + "/picture?type=large"
       
-       
-
+ 
+              
       
             const fileTransfer: TransferObject = this.transfer.create();
       
        
-      
+            alert(JSON.stringify(success))
             fileTransfer.download(ava, this.file.dataDirectory+ "ava.png").then((entry) => {
       
               
@@ -188,10 +188,9 @@ logForm() {
                 localStorage.setItem('user',success.uid);
                 window.localStorage.setItem("ava",this.ava );
                 window.localStorage.setItem("name",success.displayName);
-                
-                
+             
          
-            this.auth.update1(success.uid,success.email,this.ava ,success.displayName);
+            this.auth.update1(success.uid,"none",this.ava ,success.displayName);
          
             this.db.object("userProfile/"+success.uid).update({id:success.uid});
             this.navCtrl.setRoot(TabsPage);

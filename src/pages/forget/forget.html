@@ -1,6 +1,6 @@
 <ion-header>
   <ion-navbar>
-    <ion-title>密码重设</ion-title>
+    <ion-title>rest password</ion-title>
   </ion-navbar>
 </ion-header>
 
@@ -10,14 +10,14 @@
     <ion-item>
       <ion-label stacked>Email</ion-label>
       <ion-input #email formControlName="email" type="email" (change)="elementChanged(email)"
-        placeholder="你的邮箱地址"
+        placeholder="email"
         [class.invalid]="!resetpwdForm.controls.email.valid && (emailChanged || submitAttempt)"></ion-input>
     </ion-item>
     <ion-item class="error-message" *ngIf="!resetpwdForm.controls.email.valid  && (emailChanged || submitAttempt)">
-      <p>请输入正确邮箱.</p>
+      <p>Please enter right password and username.</p>
     </ion-item>
     <button ion-button block type="submit">
-      重置密码
+      reset password
     </button>
   </form>
 </ion-content>
